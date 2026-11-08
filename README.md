@@ -2,7 +2,7 @@
 
 Simple, fast, and a few 'hacker' tricks for code review 🧑‍💻
 
-<p align="center"> <img src="img.png" alt="alt text" /> </p>
+<p align="center"> <img src="banner.svg" alt="Retro monitor running review commands and what each one can find" /> </p>
 
 ## Setup ⚙️
 
@@ -82,10 +82,10 @@ opengrep scan --config p/c
 
 ## Grep for Allocations and Error Controls 🔎
 
-Find hot memory functions fast:
+Find hot memory and file descriptor functions fast:
 
 ```bash
-grep -E "(malloc|calloc|realloc|free|strdup|strjoin|memcpy|memmove)" -R $SRC -n -C 5
+grep -E "(malloc|calloc|realloc|free|strdup|strjoin|memcpy|memmove|open|close|pipe|dup2|fork)" -R $SRC -n -C 5
 ```
 
 ## Memory and Leaks 🧠
@@ -103,6 +103,8 @@ valgrind \
 	--leak-check=full \
 	--show-leak-kinds=all \
 	--track-origins=yes \
+	--track-fds=yes \
+	--trace-children=yes \
 	--errors-for-leak-kinds=all \
 	--error-exitcode=1 \
 	./$PROGRAM
@@ -116,6 +118,7 @@ alias all_leaks="valgrind \
 	--show-leak-kinds=all \
 	--track-origins=yes \
 	--track-fds=yes \
+	--trace-children=yes \
 	--errors-for-leak-kinds=all \
 	--error-exitcode=1"
 ```
@@ -177,7 +180,7 @@ Limit virtual memory to force edge cases:
 Limit CPU time to catch hangs:
 
 ```bash
-ulimit -t 2; ./$PROGRAM
+(ulimit -t 2; ./$PROGRAM)
 ```
 
 ## Tracing 🔬
@@ -244,3 +247,5 @@ Many small lines fast:
 ```bash
 seq 1 200000 | ./$PROGRAM
 ```
+
+<p align="center"> <img src="img.webp" alt="Retro review in C" /> </p>
